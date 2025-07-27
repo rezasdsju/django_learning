@@ -1,0 +1,94 @@
+#নতুন Homepage App তৈরি
+
+mkdir abcproject
+cd abcproject
+python -m venv venv
+.\venv\Scripts\activate
+pip install django
+django-admin startproject config .
+python manage.py startapp home
+
+
+
+
+
+#১. Django ভিউ (views.py)
+#home/views.py ফাইলে নিচের কোড রাখো:
+
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home/index.html')
+
+
+
+
+#২. HTML টেমপ্লেট (home/templates/home/index.html)
+#index.html ফাইলে নিচের কোড রাখো:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Django Home Page</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f8ff; padding: 20px; }
+        h1 { color: #2a9d8f; }
+        p { font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Django Homepage!</h1>
+    <p>This is the custom homepage.</p>
+    <p>Here is an updated paragraph with <strong>bold</strong> text and a <a href="https://www.djangoproject.com/">link to Django</a>.</p>
+</body>
+</html>
+
+
+#৩. URL কনফিগারেশন
+#home/urls.py:
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+]
+
+
+#config/urls.py (প্রজেক্টের মেইন urls.py):
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('home.urls')),
+]
+
+
+#৪. settings.py ফাইলে 'home' অ্যাপ যুক্ত করা
+#config/settings.py-এর মধ্যে:
+INSTALLED_APPS = [
+    # ...
+    'home',
+]
+
+
+
+python manage.py migrate
+#এবার সার্ভার চালাও:
+python manage.py runserver
+
+
+
+#App যখন আগের তৈরি আছে সেটা open করতে নিচের command চালাতে হবে
+cd abcproject
+python -m venv venv
+.\venv\Scripts\activate
+python manage.py migrate
+python manage.py runserver
+
+
+
+
+
+
+
